@@ -1,41 +1,49 @@
 import java.util.Scanner;
-/*
-1.1 - Ввести n строк с консоли.
-1.2 - Найти самую короткую строку.
-1.3 - Вывести эту строку и ее длину.
 
-2.1 - найти фактариал n
-2.2 - Вывести это число в консоль
-*/
-
-public class FirstLab {
-    public static int getFactorial(int f) { // Ф-нция, с 1 обязательным аргументом, числом, у тоторого берется факториал
+public class Main {
+    private static int get_factorial(int f) {
         int result = 1;
-        for (int i = 1; i <= f; i++) {      // цикл с кол-вом итераций, равным поданым аргументом
-            result *= i;                    // перемножить результат на шаг итерации
+
+        for (int i = 1; i <= f; i++) {
+            result *= i;
         }
-        return result;                      // вернуть получивщееся число
+        return result;
     }
 
+    private static int four_quest(int n) {
+        int result = 0;
+        for (int i = 1; i <= n; i++) {
+            result += get_factorial(i);
+        }
+        return result;
+    }
 
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println(
-                "Вводите строки\nДля завершения нажмите \"Enter\" на пустой строке.");
-        String line = in.nextLine();                                // Запрашивается у пользователя ввод первой строки
-        String minLine = line;                                      // И она же объявляется изначально самой короткой
-        int rows_count = 0;                                         // Объявляется количество введенных строк
-        while (!line.isEmpty()) {                                   // Цикл, пока не будет принята пустая страка
-            if (minLine.length() > line.length()) minLine = line;   //      Если новая введенная строка короче ранее
-                                                                    //        найденной короткой строки ...
-            line = in.nextLine();                                   //              Перезаписывается введенная строчка
-            rows_count++;                                           //              Пополняем количество введеных строк
+        Scanner in_2 = new Scanner(System.in);
+        int n = 0;
+        System.out.println("Сколько всего будет введено точек?");
+        n = in.nextInt();
+        while (n<=0){
+            System.out.println("Сколько всего будет введено точек?");
+            n = in.nextInt();
         }
+        double[][] x_y = new double[n][2];
+        System.out.println("Введите через пробел координату точки, разделяйте точки переводом на новую строку\n");
+        String line = in_2.nextLine();                                // Запрашивается у пользователя ввод первой строки
+        for(int i=0;i<n;i++){
+            String coords[] = line.split(" ");
+            x_y[i][0] = Double.parseDouble(coords[0]);
+            x_y[i][1] = Double.parseDouble(coords[1]);
+            if (i+1<n) line = in_2.nextLine();
+        }
+        double result=0;
+        for(int i=0;i<n;i++){
+            result+= i!=n-1? x_y[i][0]* x_y[i+1][1]: x_y[i][0]* x_y[1][1];
+            result-= i!=n-1? x_y[i+1][0]*x_y[i][1]: x_y[1][0]*x_y[i][1];
+        }
+        System.out.println(result);
 
-        String result = String.format("Самая короткая строка: \"%s\"\nЕё длина: %d\n\nВведено строк: %d\n%d!=%d",
-                                       minLine, minLine.length(), rows_count, rows_count, getFactorial(rows_count));
+}}
 
-        System.out.println(result);                                 // Вывод подготовленной строки
-    }
-}
